@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using EmmetRepeatCA.Models;
+using EmmetRepeatCA.Models;  // Ensure this using directive is present
 
 namespace EmmetRepeatCA.Data
 {

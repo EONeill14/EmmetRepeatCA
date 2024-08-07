@@ -1,5 +1,6 @@
-﻿using System.Linq;
-using EmmetRepeatCA.Data; // Add this using directive
+﻿using EmmetRepeatCA.Data;
+using EmmetRepeatCA.Models;
+using Microsoft.EntityFrameworkCore;  // Add this using directive
 
 namespace EmmetRepeatCA.Models
 {
@@ -12,6 +13,6 @@ namespace EmmetRepeatCA.Models
             context = ctx;
         }
 
-        public IQueryable<Vinyl> Vinyls => context.Vinyls;
+        public IQueryable<Vinyl> Vinyls => context.Vinyls.Include(v => v.Artist);
     }
 }

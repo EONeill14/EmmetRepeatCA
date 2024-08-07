@@ -1,10 +1,14 @@
-﻿@model IEnumerable<EmmetRepeatCA.Models.Vinyl>
-
+﻿@model EmmetRepeatCA.Models.ViewModels.ProductsListViewModel
 @{
     ViewData["Title"] = "Vinyl Collection";
 }
 
-<h1>Vinyl Collection</h1>
+<h1>@ViewData["Title"]</h1>
+
+@if (!string.IsNullOrEmpty(Model.CurrentGenre))
+{
+    <h2>Genre: @Model.CurrentGenre</h2>
+}
 
 <table class="table">
     <thead>
@@ -18,11 +22,11 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var vinyl in Model)
+        @foreach (var vinyl in Model.Vinyls)
         {
             <tr>
                 <td>@vinyl.Title</td>
-                <td>@vinyl.Artist.Name</td>
+                <td>@vinyl.Artist?.Name</td>
                 <td>@vinyl.Genre</td>
                 <td>@vinyl.ReleaseDate.ToShortDateString()</td>
                 <td>@vinyl.Price.ToString("C")</td>
@@ -31,3 +35,19 @@
         }
     </tbody>
 </table>
+
+<div class="pager">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            @if (Model.PagingInfo.TotalPages > 1)
+            {
+                for (int i = 1; i <= Model.PagingInfo.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.PagingInfo.CurrentPage ? "active" : "")">
+                        <a class="page-link" asp-action="Index" asp-route-productPage="@i" asp-route-genre="@Model.CurrentGenre">@i</a>
+                    </li>
+                }
+            }
+        </ul>
+    </nav>
+</div>

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<StoreDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -12,10 +12,13 @@ builder.Services.AddScoped<IStoreRepository, EfStoreRepository>();
 
 var app = builder.Build();
 
-// Seed the database
-SeedData.EnsurePopulated(app);
 
-// Configure the HTTP request pipeline.
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    SeedData.EnsurePopulated(app);
+}
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -24,6 +27,27 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+app.MapControllerRoute(
+    name: "catpage",
+    pattern: "{genre}/Page{productPage:int}",
+    defaults: new { Controller = "Home", action = "Index" });
+
+app.MapControllerRoute(
+    name: "page",
+    pattern: "Page{productPage:int}",
+    defaults: new { Controller = "Home", action = "Index" });
+
+app.MapControllerRoute(
+    name: "category",
+    pattern: "{genre}",
+    defaults: new { Controller = "Home", action = "Index", productPage = 1 });
+
+app.MapControllerRoute(
+    name: "pagination",
+    pattern: "Products/Page{productPage:int}",
+    defaults: new { Controller = "Home", action = "Index" });
+
 
 app.UseRouting();
 
