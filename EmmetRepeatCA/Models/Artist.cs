@@ -1,16 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace EmmetRepeatCA.Models
 {
     public class Artist
     {
-        public int id { get; set; }
+        public int Id { get; set; }
 
         [Required]
-        public string name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
-        public string Bio {  get; set; }
+        public string Bio { get; set; } = string.Empty;
 
-        public ICollection<Vinyl> Vinyls { get; set; }
+        // Navigation property
+        public ICollection<Vinyl> Vinyls { get; set; } = new List<Vinyl>();
     }
 }

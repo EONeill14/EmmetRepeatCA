@@ -1,8 +1,33 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<EmmetRepeatCA.Models.Vinyl>
+
+@{
+    ViewData["Title"] = "Vinyl Collection";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h1>Vinyl Collection</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Artist</th>
+            <th>Genre</th>
+            <th>Release Date</th>
+            <th>Price</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var vinyl in Model)
+        {
+            <tr>
+                <td>@vinyl.Title</td>
+                <td>@vinyl.Artist.Name</td>
+                <td>@vinyl.Genre</td>
+                <td>@vinyl.ReleaseDate.ToShortDateString()</td>
+                <td>@vinyl.Price.ToString("C")</td>
+                <td>@vinyl.Description</td>
+            </tr>
+        }
+    </tbody>
+</table>
