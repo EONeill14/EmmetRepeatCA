@@ -1,11 +1,10 @@
-﻿using EmmetRepeatCA.Models;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 
-namespace EmmetRepeatCA.Data
+namespace EmmetRepeatCA.Models
 {
     public static class SeedData
     {

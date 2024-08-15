@@ -1,0 +1,90 @@
+﻿@* @page "/admin/vinyls/edit/{id:long}"
+@page "/admin/vinyls/create"
+@inherits OwningComponentBase<IStoreRepository>
+
+<style>
+    div.validation-message {
+        color: rgb(220, 53, 69);
+        font-weight: 500
+    }
+</style>
+
+<h3 class="bg-@ThemeColor text-white text-center p-1">@TitleText a Vinyl</h3>
+<EditForm Model="Vinyl" OnValidSubmit="SaveVinyl">
+    <DataAnnotationsValidator />
+    @if (Vinyl.VinylId != 0)
+    {
+        <div class="form-group">
+            <label>ID</label>
+            <input class="form-control" disabled value="@Vinyl.VinylId" />
+        </div>
+    }
+    <div class="form-group">
+        <label>Title</label>
+        <ValidationMessage For="@(() => Vinyl.Title)" />
+        <InputText class="form-control" @bind-Value="Vinyl.Title" />
+    </div>
+    <div class="form-group">
+        <label>Description</label>
+        <ValidationMessage For="@(() => Vinyl.Description)" />
+        <InputText class="form-control" @bind-Value="Vinyl.Description" />
+    </div>
+    <div class="form-group">
+        <label>Genre</label>
+        <ValidationMessage For="@(() => Vinyl.Genre)" />
+        <InputText class="form-control" @bind-Value="Vinyl.Genre" />
+    </div>
+    <div class="form-group">
+        <label>Price</label>
+        <ValidationMessage For="@(() => Vinyl.Price)" />
+        <InputNumber class="form-control" @bind-Value="Vinyl.Price" />
+    </div>
+    <div class="form-group">
+        <label>Artist</label>
+        <ValidationMessage For="@(() => Vinyl.Artist.Name)" />
+        <InputText class="form-control" @bind-Value="Vinyl.Artist.Name" />
+    </div>
+    <div class="mt-2">
+        <button type="submit" class="btn btn-@ThemeColor">Save</button>
+        <NavLink class="btn btn-secondary" href="/admin/vinyls">Cancel</NavLink>
+    </div>
+</EditForm>
+
+@code {
+
+    public IStoreRepository Repository => Service;
+
+    [Inject]
+    public NavigationManager? NavManager { get; set; }
+
+    [Parameter]
+    public long Id { get; set; } = 0;
+
+    public Vinyl Vinyl { get; set; } = new Vinyl();
+
+    protected override void OnParametersSet()
+    {
+        if (Id != 0)
+        {
+            Vinyl = Repository.Vinyls.FirstOrDefault(v => v.VinylId == Id)
+                ?? new();
+        }
+    }
+
+    public void SaveVinyl()
+    {
+        if (Id == 0)
+        {
+            Repository.CreateVinyl(Vinyl);
+        }
+        else
+        {
+            Repository.SaveVinyl(Vinyl);
+        }
+        NavManager?.NavigateTo("/admin/vinyls");
+    }
+
+    public string ThemeColor => Id == 0 ? "primary" : "warning";
+    public string TitleText => Id == 0 ? "Create" : "Edit";
+}
+ *@

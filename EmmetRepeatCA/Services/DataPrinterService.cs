@@ -1,5 +1,4 @@
-﻿using EmmetRepeatCA.Data;
-using EmmetRepeatCA.Models;
+﻿using EmmetRepeatCA.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;

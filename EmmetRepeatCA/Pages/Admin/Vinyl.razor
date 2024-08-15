@@ -1,0 +1,79 @@
+﻿@* @page "/admin/vinyls"
+@page "/admin"
+@inherits OwningComponentBase<IStoreRepository>
+
+<table class="table table-sm table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Genre</th>
+            <th>Price</th>
+            <td />
+        </tr>
+    </thead>
+    <tbody>
+        @if (VinylData?.Count() > 0)
+        {
+            @foreach (Vinyl v in VinylData)
+            {
+                <tr>
+                    <td>@v.VinylId</td>
+                    <td>@v.Title</td>
+                    <td>@v.Genre</td>
+                    <td>@v.Price.ToString("c")</td>
+                    <td>
+                        <NavLink class="btn btn-info btn-sm"
+                                 href="@GetDetailsUrl(v.VinylId)">
+                            Details
+                        </NavLink>
+                        <NavLink class="btn btn-warning btn-sm"
+                                 href="@GetEditUrl(v.VinylId)">
+                            Edit
+                        </NavLink>
+                        <button class="btn btn-danger btn-sm"
+                                @onclick="@(e => DeleteVinyl(v))">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5" class="text-center">No Vinyls</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<NavLink class="btn btn-primary" href="/admin/vinyls/create">Create</NavLink>
+
+@code {
+
+    public IStoreRepository Repository => Service;
+
+    public IEnumerable<Vinyl> VinylData { get; set; }
+        = Enumerable.Empty<Vinyl>();
+
+    protected async override Task OnInitializedAsync()
+    {
+        await UpdateData();
+    }
+
+    public async Task UpdateData()
+    {
+        VinylData = await Repository.Vinyls.ToListAsync();
+    }
+
+    public async Task DeleteVinyl(Vinyl v)
+    {
+        Repository.DeleteVinyl(v);
+        await UpdateData();
+    }
+
+    public string GetDetailsUrl(long id) => $"/admin/vinyls/details/{id}";
+    public string GetEditUrl(long id) => $"/admin/vinyls/edit/{id}";
+}
+ *@

@@ -1,19 +1,19 @@
 ﻿@model IEnumerable<string>
 
-@if (Model.Any())
-{
-    <ul class="list-group">
-        @foreach (var genre in Model)
-        {
-            <li class="list-group-item">
-                <a asp-controller="Home" asp-action="Index" asp-route-genre="@genre">
-                    @genre
-                </a>
-            </li>
-        }
-    </ul>
-}
-else
-{
-    <p>No genres available.</p>
-}
+<div class="d-grid gap-2">
+    <a class="btn btn-outline-secondary"
+       asp-action="Index"
+       asp-controller="Home"
+       asp-route-genre="">Home</a>
+
+    @foreach (string genre in Model ?? Enumerable.Empty<string>())
+    {
+        <a class="btn @(genre == ViewBag.SelectedGenre ? "btn-primary" : "btn-outline-secondary")"
+           asp-action="Index"
+           asp-controller="Home"
+           asp-route-genre="@genre"
+           asp-route-productPage="1">
+            @genre
+        </a>
+    }
+</div>

@@ -1,0 +1,35 @@
+@page "/vinyl/details/{id:long}"
+
+<h3 class="bg-info text-white text-center p-1">Vinyl Details</h3>
+
+<table class="table table-sm table-bordered table-striped">
+    <tbody>
+        <tr><th>ID</th><td>@Vinyl?.VinylId</td></tr>
+        <tr><th>Title</th><td>@Vinyl?.Title</td></tr>
+        <tr><th>Description</th><td>@Vinyl?.Description</td></tr>
+        <tr><th>Genre</th><td>@Vinyl?.Genre</td></tr>
+        <tr><th>Price</th><td>@Vinyl?.Price.ToString("C")</td></tr>
+        <tr><th>Artist</th><td>@Vinyl?.Artist?.Name</td></tr>
+        <tr><th>Release Date</th><td>@Vinyl?.ReleaseDate.ToString("dd/MM/yyyy")</td></tr>
+    </tbody>
+</table>
+
+<a class="btn btn-warning" href="@EditUrl">Edit</a>
+<a class="btn btn-secondary" href="/vinyl">Back</a>
+
+@code {
+    [Parameter]
+    public long Id { get; set; }
+
+    public Vinyl? Vinyl { get; set; }
+
+    [Inject]
+    public IStoreRepository? Repository { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        Vinyl = Repository?.Vinyls.FirstOrDefault(v => v.VinylId == Id);
+    }
+
+    public string EditUrl => $"/vinyl/edit/{Vinyl?.VinylId}";
+}

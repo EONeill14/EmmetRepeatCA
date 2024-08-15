@@ -6,7 +6,7 @@ namespace EmmetRepeatCA.Components
 {
     public class NavigationMenuViewComponent : ViewComponent
     {
-        private readonly IStoreRepository repository;
+        private IStoreRepository repository;
 
         public NavigationMenuViewComponent(IStoreRepository repo)
         {
@@ -15,13 +15,11 @@ namespace EmmetRepeatCA.Components
 
         public IViewComponentResult Invoke()
         {
-            var genres = repository.Vinyls
-                                   .Select(v => v.Genre)
-                                   .Distinct()
-                                   .OrderBy(genre => genre)
-                                   .ToList();
-
-            return View(genres);
+            ViewBag.SelectedCategory = RouteData?.Values["genre"];
+            return View(repository.Vinyls
+                .Select(x => x.Genre)
+                .Distinct()
+                .OrderBy(x => x));
         }
     }
 }

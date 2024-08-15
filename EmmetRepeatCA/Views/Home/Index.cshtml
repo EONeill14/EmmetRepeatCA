@@ -1,49 +1,16 @@
 ﻿@model EmmetRepeatCA.Models.ViewModels.ProductsListViewModel
 
-@{
-    ViewData["Title"] = "Vinyl Collection";
-}
-
-<h1 class="mb-4 text-center">@ViewData["Title"]</h1>
-
-@if (!string.IsNullOrEmpty(Model.CurrentGenre))
+@foreach (var vinyl in Model?.Vinyls ?? Enumerable.Empty<EmmetRepeatCA.Models.Vinyl>())
 {
-    <h2 class="mb-4 text-primary">Genre: @Model.CurrentGenre</h2>
+    <partial name="ProductSummary" model="vinyl" />
 }
 
-<table class="table table-bordered table-hover">
-    <thead class="table-light">
-        <tr>
-            <th>Title</th>
-            <th>Artist</th>
-            <th>Genre</th>
-            <th>Release Date</th>
-            <th>Price</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var vinyl in Model.Vinyls)
-        {
-            <tr>
-                <td>@vinyl.Title</td>
-                <td>@vinyl.Artist?.Name</td>
-                <td>@vinyl.Genre</td>
-                <td>@vinyl.ReleaseDate.ToShortDateString()</td>
-                <td>@vinyl.Price.ToString("C")</td>
-                <td>@vinyl.Description</td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-<div class="d-flex justify-content-center">
-    <page-link page-model="Model.PagingInfo"
-               page-action="Index"
-               page-classes-enabled="true"
-               page-class="btn btn-outline-primary"
-               page-class-normal="btn-light"
-               page-class-selected="btn-primary"
-               page-url-genre="@Model.CurrentGenre">
-    </page-link>
+<div page-model="@Model?.PagingInfo"
+     page-action="Index"
+     page-classes-enabled="true"
+     page-class="btn"
+     page-class-normal="btn-outline-dark"
+     page-class-selected="btn-primary"
+     page-url-category="@Model?.CurrentGenre!"
+     class="btn-group pull-right m-1">
 </div>
