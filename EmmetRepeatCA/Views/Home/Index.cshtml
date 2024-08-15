@@ -1,17 +1,18 @@
 ﻿@model EmmetRepeatCA.Models.ViewModels.ProductsListViewModel
+
 @{
     ViewData["Title"] = "Vinyl Collection";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1 class="mb-4 text-center">@ViewData["Title"]</h1>
 
 @if (!string.IsNullOrEmpty(Model.CurrentGenre))
 {
-    <h2>Genre: @Model.CurrentGenre</h2>
+    <h2 class="mb-4 text-primary">Genre: @Model.CurrentGenre</h2>
 }
 
-<table class="table">
-    <thead>
+<table class="table table-bordered table-hover">
+    <thead class="table-light">
         <tr>
             <th>Title</th>
             <th>Artist</th>
@@ -36,18 +37,13 @@
     </tbody>
 </table>
 
-<div class="pager">
-    <nav aria-label="Page navigation">
-        <ul class="pagination">
-            @if (Model.PagingInfo.TotalPages > 1)
-            {
-                for (int i = 1; i <= Model.PagingInfo.TotalPages; i++)
-                {
-                    <li class="page-item @(i == Model.PagingInfo.CurrentPage ? "active" : "")">
-                        <a class="page-link" asp-action="Index" asp-route-productPage="@i" asp-route-genre="@Model.CurrentGenre">@i</a>
-                    </li>
-                }
-            }
-        </ul>
-    </nav>
+<div class="d-flex justify-content-center">
+    <page-link page-model="Model.PagingInfo"
+               page-action="Index"
+               page-classes-enabled="true"
+               page-class="btn btn-outline-primary"
+               page-class-normal="btn-light"
+               page-class-selected="btn-primary"
+               page-url-genre="@Model.CurrentGenre">
+    </page-link>
 </div>

@@ -10,6 +10,8 @@ builder.Services.AddDbContext<StoreDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IStoreRepository, EfStoreRepository>();
 
+builder.Services.AddRazorPages();
+
 var app = builder.Build();
 
 
@@ -48,6 +50,7 @@ app.MapControllerRoute(
     pattern: "Products/Page{productPage:int}",
     defaults: new { Controller = "Home", action = "Index" });
 
+app.MapRazorPages();
 
 app.UseRouting();
 

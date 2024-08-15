@@ -16,3 +16,31 @@
             background-color: #007bff;
             color: white;
         }
+/* EmmetRepeatCA.styles.css */
+
+/* Enhance the sidebar menu */
+.sidebar .list-group-item {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+/* Styling the main content */
+h1 {
+    font-size: 2.5rem;
+}
+
+h2 {
+    font-size: 1.75rem;
+    margin-bottom: 20px;
+}
+
+/* Table styling */
+.table {
+    font-size: 1.1rem;
+}
+
+/* Pagination buttons */
+.page-link {
+    padding: 0.5rem 1rem;
+    font-size: 1.1rem;
+}

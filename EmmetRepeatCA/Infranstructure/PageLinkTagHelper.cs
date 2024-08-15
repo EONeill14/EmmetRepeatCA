@@ -1,56 +1,56 @@
 ﻿using EmmetRepeatCA.Models.ViewModels;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
-namespace EmmetRepeatCA.Infrastructure
+public class PageLinkTagHelper : TagHelper
 {
-    [HtmlTargetElement("div", Attributes = "page-model")]
-    public class PageLinkTagHelper : TagHelper
+    private IUrlHelperFactory urlHelperFactory;
+
+    public PageLinkTagHelper(IUrlHelperFactory helperFactory)
     {
-        private IUrlHelperFactory urlHelperFactory;
+        urlHelperFactory = helperFactory;
+    }
 
-        public PageLinkTagHelper(IUrlHelperFactory urlHelperFactory)
+    [ViewContext]
+    [HtmlAttributeNotBound]
+    public ViewContext ViewContext { get; set; }
+
+    public PagingInfo PageModel { get; set; }
+    public string PageAction { get; set; }
+    public bool PageClassesEnabled { get; set; } = false;
+    public string PageClass { get; set; }
+    public string PageClassNormal { get; set; }
+    public string PageClassSelected { get; set; }
+
+    [HtmlAttributeName(DictionaryAttributePrefix = "page-url-")]
+    public Dictionary<string, object> PageUrlValues { get; set; } = new Dictionary<string, object>();
+
+    public override void Process(TagHelperContext context, TagHelperOutput output)
+    {
+        if (ViewContext != null && PageModel != null)
         {
-            this.urlHelperFactory = urlHelperFactory;
-        }
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            TagBuilder result = new TagBuilder("div");
 
-        [ViewContext]
-        [HtmlAttributeNotBound]
-        public ViewContext ViewContext { get; set; }
-
-        public PagingInfo PageModel { get; set; }
-        public string PageAction { get; set; }
-
-        public bool PageClassesEnabled { get; set; } = false;
-        public string PageClass { get; set; } = String.Empty;
-        public string PageClassNormal { get; set; } = String.Empty;
-        public string PageClassSelected { get; set; } = String.Empty;
-
-        public override void Process(TagHelperContext context, TagHelperOutput output)
-        {
-            if (ViewContext != null && PageModel != null)
+            for (int i = 1; i <= PageModel.TotalPages; i++)
             {
-                IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
-                TagBuilder result = new TagBuilder("div");
+                TagBuilder tag = new TagBuilder("a");
+                PageUrlValues["productPage"] = i;
+                tag.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
 
-                for (int i = 1; i <= PageModel.TotalPages; i++)
+                if (PageClassesEnabled)
                 {
-                    TagBuilder tag = new TagBuilder("a");
-                    tag.Attributes["href"] = urlHelper.Action(PageAction,
-                        new { productPage = i });
-                    if (PageClassesEnabled)
-                    {
-                        tag.AddCssClass(PageClass);
-                        tag.AddCssClass(i == PageModel.CurrentPage ? PageClassSelected : PageClassNormal);
-                    }
-                    tag.InnerHtml.Append(i.ToString());
-                    result.InnerHtml.AppendHtml(tag);
+                    tag.AddCssClass(PageClass);
+                    tag.AddCssClass(i == PageModel.CurrentPage ? PageClassSelected : PageClassNormal);
                 }
-                output.Content.AppendHtml(result.InnerHtml);
+
+                tag.InnerHtml.Append(i.ToString());
+                result.InnerHtml.AppendHtml(tag);
             }
+            output.Content.AppendHtml(result.InnerHtml);
         }
     }
 }
