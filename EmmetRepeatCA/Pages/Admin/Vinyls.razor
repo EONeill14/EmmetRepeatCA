@@ -1,5 +1,9 @@
-﻿@* @page "/admin/vinyls"
+﻿@using EmmetRepeatCA.Models
+
+@page "/admin/vinyls"
 @page "/admin"
+@* <h4>This is the Vinyl Page</h4>
+ *@
 @inherits OwningComponentBase<IStoreRepository>
 
 <table class="table table-sm table-striped table-bordered">
@@ -54,8 +58,7 @@
 
     public IStoreRepository Repository => Service;
 
-    public IEnumerable<Vinyl> VinylData { get; set; }
-        = Enumerable.Empty<Vinyl>();
+    public IEnumerable<Vinyl> VinylData { get; set; } = Enumerable.Empty<Vinyl>();
 
     protected async override Task OnInitializedAsync()
     {
@@ -76,4 +79,3 @@
     public string GetDetailsUrl(long id) => $"/admin/vinyls/details/{id}";
     public string GetEditUrl(long id) => $"/admin/vinyls/edit/{id}";
 }
- *@

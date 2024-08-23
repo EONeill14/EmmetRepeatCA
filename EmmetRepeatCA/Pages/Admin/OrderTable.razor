@@ -1,4 +1,4 @@
-﻿@* <table class="table table-sm table-striped table-bordered">
+﻿<table class="table table-sm table-striped table-bordered">
     <thead>
         <tr><th colspan="5" class="text-center">@TableTitle</th></tr>
     </thead>
@@ -6,7 +6,7 @@
         @if (Orders?.Count() > 0) {
             @foreach (Order o in Orders) {
                 <tr>
-                    <td>@o.Name</td><td>@o.Zip</td><th>Product</th><th>Quantity</th>
+                    <td>@o.Name</td><td>@o.Eircode</td><th>Vinyl</th><th>Quantity</th>
                 <td>                    
                     <button class="btn btn-sm btn-danger" 
                             @onclick="@(e => OrderSelected.InvokeAsync(o.OrderID))">
@@ -17,7 +17,7 @@
                 @foreach (CartLine line in o.Lines) {
                     <tr>
                         <td colspan="2"></td>
-                        <td>@line.Vinyl.Name</td><td>@line.Quantity</td>
+                        <td>@line.Vinyl.Title</td><td>@line.Quantity</td>
                         <td></td>
                     </tr>
                 }
@@ -42,4 +42,3 @@
     [Parameter]
     public EventCallback<int> OrderSelected{ get; set; }
 }
- *@

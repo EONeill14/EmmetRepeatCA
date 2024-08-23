@@ -1,4 +1,4 @@
-@page "/vinyl/details/{id:long}"
+﻿@page "/admin/vinyls/details/{id:long}"
 
 <h3 class="bg-info text-white text-center p-1">Vinyl Details</h3>
 
@@ -31,5 +31,5 @@
         Vinyl = Repository?.Vinyls.FirstOrDefault(v => v.VinylId == Id);
     }
 
-    public string EditUrl => $"/vinyl/edit/{Vinyl?.VinylId}";
+    public string EditUrl => $"/admin/vinyls/edit/{Vinyl?.VinylId}";
 }

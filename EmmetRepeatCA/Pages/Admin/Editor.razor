@@ -1,4 +1,4 @@
-﻿@* @page "/admin/vinyls/edit/{id:long}"
+﻿@page "/admin/vinyls/edit/{id:long}"
 @page "/admin/vinyls/create"
 @inherits OwningComponentBase<IStoreRepository>
 
@@ -87,4 +87,3 @@
     public string ThemeColor => Id == 0 ? "primary" : "warning";
     public string TitleText => Id == 0 ? "Create" : "Edit";
 }
- *@
